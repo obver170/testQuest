@@ -56,7 +56,7 @@ function get_ids_date($idDate, $link){
 
 
 // Подключиться к БД, получить, распарсить данные по id пользователя
-function get_person($idPerson){
+function get_person($idPerson=1){
 
   $user_connect = connect();
   extract($user_connect);

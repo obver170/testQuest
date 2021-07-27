@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html>
+<?php
+include 'code.php';
+$p = get_person($idPerson=1);
+$d = get_all_dates(1);
+?>
+
+
 	<head>
 		<?php $attr= 'CODE' ?>
 		<meta charset="utf-8">
@@ -19,23 +26,23 @@
 				<div class="bl_table">
 					<div>
 						<div class="aside__person_img" style="background-image: url(img/img_person-1.jpg);"></div>
-						<div class="aside__person_name">Emilia Clarke<span>актриса</span></div>
+						<div class="aside__person_name"><?php echo $p['fName'].' '.$p['sName'].'<span>'.$p['profession'].'</span>'?></div>
 						<div class="aside__person_data">
 							<ul>
 								<li>
 									<i class="i_icon-1"></i>
-									<p>Лондон, Великобритания</p>
+									<p><?php echo ($p['city'].', '.$p['country']) ?></p>
 								</li>
 								<li>
 									<i class="i_icon-2"></i>
-									<p>26 октября 1986, 28 лет</p>
-									<span>2 месяца и 13 дней до ДР</span>
-								</li>
+									<p><?php echo ($d['human_date'].', '.$d['age'].' года') ?></p>
+									<span><?php echo ($d['days_to_holiday'].' месяца и '.$d['month_to_holiday'].' дня до ДР') ?></span>
+									</li>
 							</ul>
 						</div>
 						<div class="aside__person_descr">
 							<p>
-								Британская актриса. Наиболее известна по роли Дайнерис Таргарие в телесериале "Игра престолов" и Сары Коннор в фильме "Терминатор: Генезис".
+								<?php echo $p['desc']?>
 							</p>
 						</div>
 					</div>
@@ -97,10 +104,5 @@
 				</div>
 			</div>
 		</div>
-		<p>!!!!!!!!!!!!!!!!</p>
-		<?php echo 'JJJJJJJJJJJ';
-		echo $attr;
-		 ?>
-
 	</body>
 </html>
