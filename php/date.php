@@ -65,9 +65,9 @@ function human_month($num){
 
 
 // Получить всю информацию связанную с датами по id пользователя
-function get_all_dates($id){
+function get_all_dates($id, $link){
   // Информация из БД
-  $person = get_person($id);
+  $person = get_person($id, $link);
 
   // Дата рождения пользователя
   $birth = $person['year'].'-'.$person['month'].'-'.$person['day'];

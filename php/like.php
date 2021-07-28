@@ -1,24 +1,4 @@
 <?php
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-// Передает данные для полключения к БД
-// function connect(
-//     $host='localhost',
-//     $usr='admin1',
-//     $pass='admin1',
-//     $db='test_oneway'
-//   ){
-//
-//   $conn = array();
-//   $conn['host'] = $host;
-//   $conn['usr'] = $usr;
-//   $conn['pass'] = $pass;
-//   $conn['db'] = $db;
-//
-//   return $conn;
-// }
 
 function get_likes($idPhoto, $link){
   $sql = "SELECT * From Ip WHERE Photo_idPhoto=$idPhoto;";
@@ -28,8 +8,6 @@ function get_likes($idPhoto, $link){
     // $res[] = $row['name'];
     $res[$row['idIp']] = $row['name'];
   }
-
-  // $count = mysqli_num_rows($res);
 
   return $res;
 }
@@ -120,8 +98,10 @@ function action($idPhoto){
 
   $likes = get_likes($idPhoto, $link);
 
-  // $ip = $_SERVER['REMOTE_ADDR'];
-  $ip = '2.2.2.2';
+  // Для сервера
+  $ip = $_SERVER['REMOTE_ADDR'];
+  // Для отладки в консоли
+  // $ip = '2.2.2.2';
   $ip = str_replace('.', '', $ip);
 
   $res = False;
