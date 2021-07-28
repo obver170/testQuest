@@ -116,6 +116,32 @@ function action($idPhoto){
   }
   return $res;
 }
+
+// Вернуть True если стоит лайк
+function get_current_isLike($idPhoto){
+  $user_connect = connect();
+  extract($user_connect);
+  $link = mysqli_connect($host, $usr, $pass, $db);
+
+  $likes = get_likes($idPhoto, $link);
+
+  // Для сервера
+  $ip = $_SERVER['REMOTE_ADDR'];
+  // Для отладки в консоли
+  // $ip = '2.2.2.2';
+  $ip = str_replace('.', '', $ip);
+
+  $res = True;
+
+  $isL = isLike($ip, $likes);
+
+  if ($isL){
+    $res = True;
+    } else {
+    $res = False;
+  }
+  return $res;
+}
 // add_like('2.2.2.2', 1);
 // action(1);
 

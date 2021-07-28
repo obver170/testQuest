@@ -14,4 +14,5 @@ $(document).ready(function(){
 	$(".content__slider_pag span:last-child").click(function(){
 		fotorama.show('>');
 	});
+
 });
