@@ -159,9 +159,8 @@ function get_data($id=1){
   $res['url2'] = $photo2['name'];
   $res['url3'] = $photo3['name'];
   $res['count1'] = $photo1['count_like'];
-  $res['count2'] = $photo1['count_like'];
-  $res['count3'] = $photo1['count_like'];
-
+  $res['count2'] = $photo2['count_like'];
+  $res['count3'] = $photo3['count_like'];
 
   return $res;
 
