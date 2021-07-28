@@ -41,29 +41,44 @@ function get_data($id=1){
 
   $res = array();
   // Ответ
+  // Имя
   $res['fName'] = $person['fName'];
+  // Фамилия
   $res['sName'] = $person['sName'];
+  // Описание
   $res['desc'] = $person['desc'];
+  // Город
   $res['city'] = $person['city'];
+  // Страна
   $res['country'] = $person['country'];
-  $res['day'] = $person['day'];
-  $res['month'] = $person['month'];
-  $res['year'] = $person['year'];
+  // Профессия
   $res['profession'] = $person['profession'];
 
+  //Возраст
   $res['age'] = $date['age'];
+  // Количество месяцев до ДР
   $res['month_to_holiday'] = $date['month_to_holiday'];
+  // Количество дней до ДР
   $res['days_to_holiday'] = $date['days_to_holiday'];
+  // Строка для печати с датой рождения
   $res['human_date'] = $date['human_date'];
+  // склонение "дня"
+  $res['day'] = $date['day'];
+  // склонение "месяца"
+  $res['month'] = $date['month'];
 
-  // Начальная информация о фотографиях
+
+
+  // Информация о фотографиях
   $photos = get_photos($id, $link);
   $photo1 =get_photo($photos, 1);
   $photo2 =get_photo($photos, 2);
   $photo3 =get_photo($photos, 3);
+  // Ссылки на фото
   $res['url1'] = $photo1['name'];
   $res['url2'] = $photo2['name'];
   $res['url3'] = $photo3['name'];
+  // Количество лайков
   $res['count1'] = $photo1['count_like'];
   $res['count2'] = $photo2['count_like'];
   $res['count3'] = $photo3['count_like'];

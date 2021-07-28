@@ -55,12 +55,36 @@ function get_rus_month($num){
 
 // Приводит в правильную форму слово день в зависимости от его порядкового номера
 function human_days($num){
-  pass;
+  $res = 'дней';
+  $one = [1,21,31];
+  $two = [2, 3, 4, 22, 23, 24, 25];
+
+  if (in_array($num, $one)) {
+    $res = 'день';
+    return $res;
+  }
+  if (in_array($num, $two)) {
+    $res = 'дня';
+  }
+
+  return $res;
 }
+
 
 // Приводит в правильную форму слово месяц в зависимости от его порядкового номера
 function human_month($num){
-  pass;
+  $res = 'месяцев';
+  $one = [2, 3, 4];
+
+  if ($num == 1) {
+    $res = 'месяц';
+    return $res;
+  }
+  if (in_array($num, $one)) {
+    $res = 'месяца';
+  }
+
+  return $res;
 }
 
 
@@ -82,12 +106,17 @@ function get_all_dates($id, $link){
   // Отформатированная строка с датой дня рожения
   $human_date = $person['day'].' '.$month.' '.$person['year'];
 
+  $h_day = human_days($days_to_holiday);
+  $h_month = human_month($month_to_holiday);
+
+
   $res = array();
   $res['age'] = $age;
   $res['month_to_holiday'] = $month_to_holiday;
   $res['days_to_holiday'] = $days_to_holiday;
   $res['human_date'] = $human_date;
-
+  $res['day'] = $h_day;
+  $res['month'] = $h_month;
   return $res;
 
 }
