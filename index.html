@@ -1,7 +1,6 @@
 <?php
 include 'code.php';
-$p = get_person($idPerson=1);
-$d = get_all_dates(1);
+$p = get_data(1);
 ?>
 
 <!DOCTYPE html>
@@ -34,8 +33,8 @@ $d = get_all_dates(1);
 								</li>
 								<li>
 									<i class="i_icon-2"></i>
-									<p><?php echo ($d['human_date'].', '.$d['age'].' года') ?></p>
-									<span><?php echo ($d['days_to_holiday'].' месяца и '.$d['month_to_holiday'].' дня до ДР') ?></span>
+									<p><?php echo ($p['human_date'].', '.$p['age'].' года') ?></p>
+									<span><?php echo ($p['month_to_holiday'].' месяца и '.$p['days_to_holiday'].' дня до ДР') ?></span>
 									</li>
 							</ul>
 						</div>

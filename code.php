@@ -1,4 +1,13 @@
 <?php
+ini_set('display_errors',1);
+error_reporting(E_ALL);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+// include 'php/person.php';
+include 'php/date.php';
+include 'php/like.php';
+
+
 // Передает данные для полключения к БД
 function connect(
     $host='localhost',
@@ -40,7 +49,6 @@ function get_id_country($idCity, $link){
   return $idCountry;
 }
 
-
 // Получить id дня, месяца, года
 function get_ids_date($idDate, $link){
   $sql = "SELECT * FROM Date WHERE idDate = $idDate";
@@ -55,59 +63,9 @@ function get_ids_date($idDate, $link){
   return $res;
 }
 
-
-// Возвращает список ip, поставивших лайки
-function get_likes($idPhoto, $link){
-  $sql = "SELECT * From Ip WHERE Photo_idPhoto=$idPhoto;";
-  $result = mysqli_query($link, $sql);
-  $res = array();
-  while ($row = mysqli_fetch_array($result)) {
-    $res[] = $row['name'];
-  }
-
-  // $count = mysqli_num_rows($res);
-
-  return $res;
-}
-
-// Проверить есть ли ip в списке лайков фотографии
-// function isLike($ip, $photo){
-//   if(in_array('Marina',$Mass)) echo 'Yes';
-// }
-
-
-// Получить все фото пользователя, по id пользователя
-function get_photos($id, $link){
-    $sql = "SELECT * From Photo WHERE Person_idPerson=$id;";
-    $result = mysqli_query($link, $sql);
-    $res = array();
-    while ($row = mysqli_fetch_array($result)) {
-      $idPhoto = $row['idPhoto'];
-      $res[$idPhoto]['name'] = $row['name'];
-      $res[$idPhoto]['description'] = $row['description'];
-      $res[$idPhoto]['likes'] = get_likes($idPhoto, $link);
-      // $res[$idPhoto]['likes'] = get_count_likes($idPhoto, $link);
-      }
-  return $res;
-
-}
-
-// Получить информацио о фотографии из массива по ее id
-// function get_photo($arr, $id){
-//   $res = 'Такой фотографии не существует';
-//   $res = $arr[$id];
-//   foreach ($arr as $row) {
-//     if ($row['idPhoto'] == $id){
-//       $res = $row;
-//       return $res;
-//     }
-//   }
-//   return $res;
-// }
-
-
 // Подключиться к БД, получить, распарсить данные по id пользователя
 function get_person($idPerson=1){
+
 
   $user_connect = connect();
   extract($user_connect);
@@ -163,85 +121,35 @@ function get_person($idPerson=1){
 }
 
 
-// Получить текущий возраст пользователя
-// $birth - имеет формат (Y,m,d)
-function get_age($birth){
-  $now_date = date("d.m.Y");
-  $birth_date = strtotime($birth);
-  $now_date = strtotime($now_date);
-  $res = ($now_date-$birth_date) / (60*60*24*365);
+// Формирует полный ответ
+function get_data($id=1){
 
-  return floor($res);
-}
-
-// Возвращает количество дней и месяцев до Дня Рождения пользователя
-function get_holiday($birth){
-
-  $now_date = date("d.m.Y");
-  $now_date = strtotime($now_date);
-  $birth_date = strtotime($birth);
-
-  $month_b = date('m', $birth_date);
-  $month_n = date('m', $now_date);
-
-  $day_b = date('d', $birth_date);
-  $day_n = date('d', $now_date);
-
-  $diff_m = ($month_b - $month_n);
-  $diff_d = ($month_b - $month_n) + ($day_b - $day_n);
-
-  $res = array();
-  $res['months'] = $diff_m;
-  $res['days'] = $diff_d;
-  return $res;
-}
-
-
-// Получить название месяца на русском по его порядковому номеру
-function get_rus_month($num){
-  $month = array();
-  $month['1'] = 'Января';
-  $month['2'] = 'Февраля';
-  $month['3'] = 'Марта';
-  $month['4'] = 'Апреля';
-  $month['5'] = 'Мая';
-  $month['6'] = 'Июня';
-  $month['7'] = 'Июля';
-  $month['8'] = 'Августа';
-  $month['9'] = 'Сентября';
-  $month['10'] = 'Октября';
-  $month['11'] = 'Ноября';
-  $month['12'] = 'Декабря';
-
-  return $month[$num];
-}
-
-
-// Получить всю информацию связанную с датами
-function get_all_dates($id=1){
-  // Информация из БД
   $person = get_person($id);
-
-  // Дата рождения пользователя
-  $birth = $person['year'].'-'.$person['month'].'-'.$person['day'];
-  // Возраст пользователя в годах
-  $age = get_age($birth);
-  // Количество месяцев и дней до Дня Рождения
-  $holiday = get_holiday($birth);
-  $month_to_holiday = $holiday['months'];
-  $days_to_holiday = $holiday['days'];
-  // Название месяца
-  $month = strtoupper(get_rus_month($person['month']));
-  // Отформатированная строка с датой дня рожения
-  $human_date = $person['day'].' '.$month.' '.$person['year'];
+  $date = get_all_dates($id);
 
   $res = array();
-  $res['age'] = $age;
-  $res['month_to_holiday'] = $month_to_holiday;
-  $res['days_to_holiday'] = $days_to_holiday;
-  $res['human_date'] = $human_date;
+  // Ответ
+  $res['fName'] = $person['fName'];
+  $res['sName'] = $person['sName'];
+  $res['desc'] = $person['desc'];
+  $res['city'] = $person['city'];
+  $res['country'] = $person['country'];
+  $res['day'] = $person['day'];
+  $res['month'] = $person['month'];
+  $res['year'] = $person['year'];
+  $res['profession'] = $person['profession'];
+
+  $res['age'] = $date['age'];
+  $res['month_to_holiday'] = $date['month_to_holiday'];
+  $res['days_to_holiday'] = $date['days_to_holiday'];
+  $res['human_date'] = $date['human_date'];
+
 
   return $res;
 
 }
-get_person(1);
+
+
+
+// add_like("2.2.2.2", 1);
+del_like(7);
