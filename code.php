@@ -56,14 +56,24 @@ function get_ids_date($idDate, $link){
 }
 
 
-// Возвращает количество лайков на фотографии
-function get_count_likes($idPhoto, $link){
+// Возвращает список ip, поставивших лайки
+function get_likes($idPhoto, $link){
   $sql = "SELECT * From Ip WHERE Photo_idPhoto=$idPhoto;";
   $result = mysqli_query($link, $sql);
-  $count = mysqli_num_rows($result);
+  $res = array();
+  while ($row = mysqli_fetch_array($result)) {
+    $res[] = $row['name'];
+  }
 
-  return $count;
+  // $count = mysqli_num_rows($res);
+
+  return $res;
 }
+
+// Проверить есть ли ip в списке лайков фотографии
+// function isLike($ip, $photo){
+//   if(in_array('Marina',$Mass)) echo 'Yes';
+// }
 
 
 // Получить все фото пользователя, по id пользователя
@@ -75,10 +85,9 @@ function get_photos($id, $link){
       $idPhoto = $row['idPhoto'];
       $res[$idPhoto]['name'] = $row['name'];
       $res[$idPhoto]['description'] = $row['description'];
-      $res[$idPhoto]['likes'] = get_count_likes($idPhoto, $link);
+      $res[$idPhoto]['likes'] = get_likes($idPhoto, $link);
+      // $res[$idPhoto]['likes'] = get_count_likes($idPhoto, $link);
       }
-      $count = get_count_likes(1, $link);
-      echo $count;
   return $res;
 
 }
@@ -149,7 +158,6 @@ function get_person($idPerson=1){
   $res['profession'] = $profession;
 
   $photos = get_photos($idPerson, $link);
-  get_photo($photos, 1);
 
   return $res;
 }
@@ -236,5 +244,4 @@ function get_all_dates($id=1){
   return $res;
 
 }
-
 get_person(1);
