@@ -16,6 +16,7 @@ function connect(
   return $conn;
 }
 
+
 // Получить название
 function get_name($table, $id, $link){
   $col = 'id'.$table;
@@ -53,6 +54,47 @@ function get_ids_date($idDate, $link){
 
   return $res;
 }
+
+
+// Возвращает количество лайков на фотографии
+function get_count_likes($idPhoto, $link){
+  $sql = "SELECT * From Ip WHERE Photo_idPhoto=$idPhoto;";
+  $result = mysqli_query($link, $sql);
+  $count = mysqli_num_rows($result);
+
+  return $count;
+}
+
+
+// Получить все фото пользователя, по id пользователя
+function get_photos($id, $link){
+    $sql = "SELECT * From Photo WHERE Person_idPerson=$id;";
+    $result = mysqli_query($link, $sql);
+    $res = array();
+    while ($row = mysqli_fetch_array($result)) {
+      $idPhoto = $row['idPhoto'];
+      $res[$idPhoto]['name'] = $row['name'];
+      $res[$idPhoto]['description'] = $row['description'];
+      $res[$idPhoto]['likes'] = get_count_likes($idPhoto, $link);
+      }
+      $count = get_count_likes(1, $link);
+      echo $count;
+  return $res;
+
+}
+
+// Получить информацио о фотографии из массива по ее id
+// function get_photo($arr, $id){
+//   $res = 'Такой фотографии не существует';
+//   $res = $arr[$id];
+//   foreach ($arr as $row) {
+//     if ($row['idPhoto'] == $id){
+//       $res = $row;
+//       return $res;
+//     }
+//   }
+//   return $res;
+// }
 
 
 // Подключиться к БД, получить, распарсить данные по id пользователя
@@ -105,6 +147,9 @@ function get_person($idPerson=1){
   $res['month'] = $month;
   $res['year'] = $year;
   $res['profession'] = $profession;
+
+  $photos = get_photos($idPerson, $link);
+  get_photo($photos, 1);
 
   return $res;
 }
@@ -191,3 +236,5 @@ function get_all_dates($id=1){
   return $res;
 
 }
+
+get_person(1);
