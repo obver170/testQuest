@@ -48,7 +48,6 @@ function isLike($ip, $arr){
 }
 
 
-
 // Получить все фото пользователя, по id пользователя
 function get_photos($id, $link){
     $sql = "SELECT * From Photo WHERE Person_idPerson=$id;";
@@ -56,22 +55,27 @@ function get_photos($id, $link){
     $res = array();
     while ($row = mysqli_fetch_array($result)) {
       $idPhoto = $row['idPhoto'];
+      $res[$idPhoto]['idPhoto'] = $row['idPhoto'];
       $res[$idPhoto]['name'] = $row['name'];
       $res[$idPhoto]['description'] = $row['description'];
       $res[$idPhoto]['likes'] = get_likes($idPhoto, $link);
-      // $res[$idPhoto]['likes'] = get_count_likes($idPhoto, $link);
+      // Количество лайков
+      $res[$idPhoto]['count_like'] = count($res[$idPhoto]['likes']);
       }
   return $res;
 
 }
 
-// Получить информацио о фотографии из массива по ее id
+// Получить информацио о фотографии из массива фотографий по ее id
 function get_photo($arr, $id){
   $res = 'Такой фотографии не существует';
   $res = $arr[$id];
   foreach ($arr as $row) {
     if ($row['idPhoto'] == $id){
-      $res = $row;
+      $res['name'] = $row['name'];
+      $res['description'] = $row['description'];
+      $res['likes'] = $row['likes'];
+      $res['count_like'] = $row['count_like'];
       return $res;
     }
   }
@@ -105,6 +109,7 @@ function del_like($idIp){
 
   return $result;
 }
+
 
 
 // Добавить лайк если его нет, если есть - удалить

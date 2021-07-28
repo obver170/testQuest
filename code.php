@@ -124,8 +124,14 @@ function get_person($idPerson=1){
 // Формирует полный ответ
 function get_data($id=1){
 
+  $user_connect = connect();
+  extract($user_connect);
+
+  $link = mysqli_connect($host, $usr, $pass, $db);
+
   $person = get_person($id);
   $date = get_all_dates($id);
+
 
   $res = array();
   // Ответ
@@ -143,6 +149,18 @@ function get_data($id=1){
   $res['month_to_holiday'] = $date['month_to_holiday'];
   $res['days_to_holiday'] = $date['days_to_holiday'];
   $res['human_date'] = $date['human_date'];
+
+  // Начальная информация о фотографиях
+  $photos = get_photos($id, $link);
+  $photo1 =get_photo($photos, 1);
+  $photo2 =get_photo($photos, 2);
+  $photo3 =get_photo($photos, 3);
+  $res['url1'] = $photo1['name'];
+  $res['url2'] = $photo2['name'];
+  $res['url3'] = $photo3['name'];
+  $res['count1'] = $photo1['count_like'];
+  $res['count2'] = $photo1['count_like'];
+  $res['count3'] = $photo1['count_like'];
 
 
   return $res;
