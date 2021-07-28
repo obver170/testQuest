@@ -4,35 +4,29 @@ error_reporting(E_ALL);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Передает данные для полключения к БД
-function connect(
-    $host='localhost',
-    $usr='admin1',
-    $pass='admin1',
-    $db='test_oneway'
-  ){
+// function connect(
+//     $host='localhost',
+//     $usr='admin1',
+//     $pass='admin1',
+//     $db='test_oneway'
+//   ){
+//
+//   $conn = array();
+//   $conn['host'] = $host;
+//   $conn['usr'] = $usr;
+//   $conn['pass'] = $pass;
+//   $conn['db'] = $db;
+//
+//   return $conn;
+// }
 
-  $conn = array();
-  $conn['host'] = $host;
-  $conn['usr'] = $usr;
-  $conn['pass'] = $pass;
-  $conn['db'] = $db;
-
-  return $conn;
-}
-
-
-
-
-
-
-
-// Возвращает список ip, поставивших лайки
 function get_likes($idPhoto, $link){
   $sql = "SELECT * From Ip WHERE Photo_idPhoto=$idPhoto;";
   $result = mysqli_query($link, $sql);
   $res = array();
   while ($row = mysqli_fetch_array($result)) {
-    $res[$row['idPhoto']] = $row['name'];
+    // $res[] = $row['name'];
+    $res[$row['idIp']] = $row['name'];
   }
 
   // $count = mysqli_num_rows($res);
@@ -41,13 +35,18 @@ function get_likes($idPhoto, $link){
 }
 
 
-//Возвращает True, если ip есть в  массиве лайков под фото
-function isLike($ip, $arr){
-  $res = False;
-  if(in_array($ip,$arr)) $res = True;
 
+// Возвращает id лайка, если ip есть в массиве лайков под фото
+function isLike($ip, $arr){
+  $res = 0;
+  foreach($arr as $key => $value){
+    if ($value == $ip){
+      $res = $key;
+    }
+  }
   return $res;
 }
+
 
 
 // Получить все фото пользователя, по id пользователя
@@ -67,20 +66,17 @@ function get_photos($id, $link){
 }
 
 // Получить информацио о фотографии из массива по ее id
-// function get_photo($arr, $id){
-//   $res = 'Такой фотографии не существует';
-//   $res = $arr[$id];
-//   foreach ($arr as $row) {
-//     if ($row['idPhoto'] == $id){
-//       $res = $row;
-//       return $res;
-//     }
-//   }
-//   return $res;
-// }
-// Получить id лайка по ip и id фото
-function get_id_like(){};
-
+function get_photo($arr, $id){
+  $res = 'Такой фотографии не существует';
+  $res = $arr[$id];
+  foreach ($arr as $row) {
+    if ($row['idPhoto'] == $id){
+      $res = $row;
+      return $res;
+    }
+  }
+  return $res;
+}
 
 // Добавить ip, к фото по ее id
 function add_like($name, $idPhoto){
@@ -123,14 +119,24 @@ function action($idPhoto){
   $ip = '2.2.2.2';
   $ip = str_replace('.', '', $ip);
 
+  $res = False;
+
   $isL = isLike($ip, $likes);
-  echo $isL;
-  // print_r($likes);
+
   if ($isL){
-    del_like();
+    del_like($isL);
   } else {
     add_like($ip, $idPhoto);
+    $res = True;
   }
+  return $res;
 }
 // add_like('2.2.2.2', 1);
-action(1);
+// action(1);
+
+// $user_connect = connect();
+// extract($user_connect);
+// $link = mysqli_connect($host, $usr, $pass, $db);
+// $idPhoto = 1;
+// $res = get_likes2($idPhoto, $link);
+// print_r ($res);
