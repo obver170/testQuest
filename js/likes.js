@@ -1,8 +1,10 @@
-// url: '../code1.php'.,
-// success: function (response) {//response is value returned from php (for your example it "bye bye"
-//    alert(response);
-//  }
-
- $('.slide__img').mouseover(
-   alert('Hello JS!');
- );
+function addFunc(){
+  $.ajax({
+    method: "POST",
+    url: "action.php",
+    data: { text: $("p.unbroken").text() }
+  })
+    .done(function( response ) {
+      $("p.broken").html(response);
+    });
+}

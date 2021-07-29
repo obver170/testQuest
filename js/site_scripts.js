@@ -5,7 +5,9 @@ $(document).ready(function(){
 		height: '408px',
 		arrows: false,
 		click: false,
-		swipe: false
+		swipe: false,
+		// Зациклить слайдер
+		loop: true
 	});
 	var fotorama = $fotoramaDiv.data('fotorama');
 	$(".content__slider_pag span:first-child").click(function(){
