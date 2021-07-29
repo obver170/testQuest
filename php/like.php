@@ -136,9 +136,9 @@ function get_current_isLike($idPhoto){
   $isL = isLike($ip, $likes);
 
   if ($isL){
-    $res = True;
+    $res = 'like';
     } else {
-    $res = False;
+    $res = 'dislike';
   }
   return $res;
 }

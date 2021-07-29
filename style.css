@@ -223,7 +223,7 @@ p{
 /* Контент */
 .content{
   color: #000000;
-  margin-left: 465px; 
+  margin-left: 465px;
   padding-left: 105px;
   position: absolute;
   top: 0;
@@ -260,7 +260,7 @@ p{
   line-height: 22px;
 }
 .content__text p + p{
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 /* slider*/
@@ -298,6 +298,14 @@ p{
   bottom: 0;
   margin: auto;
 }
-.slide__status input[type="checkbox"]:checked + label svg{
+/* .slide__status input[type="checkbox"]:checked + label svg{
   fill: red;
+} */
+
+.like {
+  fill: red;
+}
+
+.dislike{
+  fill: black;
 }
